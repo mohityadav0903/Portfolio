@@ -2,9 +2,10 @@ const express= require("express");
 const app= express();
 const nodemailer= require('nodemailer');
 const dotenv = require('dotenv');
+const path = require('path');
 dotenv.config();
 const PORT = process.env.PORT || 8000;
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 app.listen(PORT,()=>{
