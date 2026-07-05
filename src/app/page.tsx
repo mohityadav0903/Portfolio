@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { PageFrame, FrameSection } from "@/components/PageFrame";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
@@ -6,6 +7,15 @@ import { About } from "@/components/About";
 import { Experience } from "@/components/Experience";
 import { Playground } from "@/components/Playground";
 import { Footer } from "@/components/Footer";
+import { site } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: site.title,
+  description: site.description,
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default function Home() {
   return (
