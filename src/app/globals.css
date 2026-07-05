@@ -2,25 +2,196 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --surface: #ffffff;
+  --ink: #111111;
+  --ink-secondary: #555550;
+  --ink-tertiary: #888880;
+  --border: rgba(17, 17, 17, 0.1);
+  --border-strong: rgba(17, 17, 17, 0.16);
+  --brand: #245bdb;
+  --brand-soft: #eef3ff;
+  --tag-bg: #eef3ff;
+  --tag-text: #245bdb;
+  --pill-active: #d4f07a;
+  --dot-color: rgba(17, 17, 17, 0.3);
+  --dot-gap: 8px;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-foreground: var(--ink);
+  --color-muted: var(--ink-secondary);
+  --color-muted-2: var(--ink-tertiary);
+  --color-border: var(--border);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --font-sans: var(--font-sans-custom);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: auto;
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans-custom), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--surface);
+}
+
+@layer utilities {
+  .frame-outer {
+    background: var(--surface);
+    min-height: 100dvh;
+    width: 100%;
+  }
+  .frame-inner {
+    width: 100%;
+    max-width: 72rem;
+    min-height: 100dvh;
+  }
+  .frame-rail {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    overflow: hidden;
+    background-image: radial-gradient(
+      circle,
+      var(--dot-color) 1px,
+      transparent 1.5px
+    );
+    background-size: 1px var(--dot-gap);
+    background-repeat: repeat-y;
+    z-index: 30;
+  }
+  .frame-rail-left {
+    left: 0;
+  }
+  .frame-rail-right {
+    right: 0;
+  }
+  .border-dots-b {
+    position: relative;
+  }
+  .border-dots-b::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-image: radial-gradient(
+      circle,
+      var(--dot-color) 1px,
+      transparent 1px
+    );
+    background-size: var(--dot-gap) 1px;
+    background-repeat: repeat-x;
+    background-position: center;
+  }
+  .border-dots-t {
+    position: relative;
+  }
+  .border-dots-t::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background-image: radial-gradient(
+      circle,
+      var(--dot-color) 1px,
+      transparent 1px
+    );
+    background-size: var(--dot-gap) 1px;
+    background-repeat: repeat-x;
+    background-position: center;
+  }
+  .no-border-dots::after,
+  .no-border-dots::before {
+    display: none;
+  }
+  .frame-pad {
+    padding-inline: clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+  }
+  .frame-pad-sm {
+    padding-inline: clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(1.25rem, 3vw, 2rem);
+  }
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+  .nav-slash {
+    color: var(--ink-tertiary);
+    user-select: none;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+    will-change: opacity, transform;
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    will-change: auto;
+  }
+
+  .hero-in {
+    animation: hero-in 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero-in-delay-1 { animation-delay: 0.08s; }
+  .hero-in-delay-2 { animation-delay: 0.16s; }
+  .hero-in-delay-3 { animation-delay: 0.24s; }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 16px, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .hero-in,
+    .hero-in-delay-1,
+    .hero-in-delay-2,
+    .hero-in-delay-3 {
+      animation: none;
+    }
+  }
 }
