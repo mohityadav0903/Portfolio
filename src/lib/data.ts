@@ -114,31 +114,13 @@ export type Note = {
 
 export const notes: Note[] = [
   {
-    slug: "the-build-was-never-only-the-system",
-    title: "The build was never only the system",
+    slug: "the-project-had-to-outlive-the-machine",
+    title: "The project had to outlive the machine",
     description:
-      "Product engineering is the problem and the system, kept together past the first version.",
+      "A cloud agent needs a real machine. The person using it should not have to wait for that machine to be born again.",
     chip: "Product",
     date: "2026.10",
     dateISO: "2026-10-01",
-  },
-  {
-    slug: "why-the-basics-still-matter",
-    title: "Why the basics still matter when you are moving fast",
-    description:
-      "A deadline is not a reason to leave the foundation unclear.",
-    chip: "Craft",
-    date: "2026.09",
-    dateISO: "2026-09-01",
-  },
-  {
-    slug: "a-system-once-people-are-on-it",
-    title: "How I think about a system once people are on it",
-    description:
-      "What has to hold after the first version is in front of real people.",
-    chip: "Systems",
-    date: "2026.08",
-    dateISO: "2026-08-01",
   },
 ];
 

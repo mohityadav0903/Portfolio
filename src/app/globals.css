@@ -239,6 +239,233 @@ body {
     }
   }
 
+  .note > * + * {
+    margin-top: 1rem;
+  }
+
+  .note p {
+    color: var(--ink-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  .note a {
+    color: var(--ink);
+    text-decoration-line: underline;
+    text-decoration-color: var(--chapter);
+    text-underline-offset: 3px;
+  }
+
+  .note strong {
+    border-radius: 0.2em;
+    background: color-mix(in srgb, var(--chapter) 38%, transparent);
+    padding: 0 0.2em;
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .note :not(pre) > code {
+    border-radius: 0.25rem;
+    background: var(--well);
+    padding: 0.1em 0.35em;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 0.86em;
+    color: var(--ink);
+  }
+
+  .note-code {
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+  }
+
+  .note-code-lang {
+    padding: 0.45rem 1.1rem 0;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-tertiary);
+  }
+
+  .note-tree {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--ink-secondary);
+    white-space: pre;
+  }
+
+  .note-diagram {
+    margin: 0;
+  }
+
+  .note-diagram-open {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    padding: 0.35rem 0.15rem 0.15rem;
+    color: var(--ink);
+    cursor: zoom-in;
+    text-align: left;
+  }
+
+  .note-diagram-open:hover {
+    border-color: var(--chapter);
+  }
+
+  .note-diagram-hint {
+    position: absolute;
+    top: 0.7rem;
+    right: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--surface);
+    padding: 0.15rem 0.55rem;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--ink-secondary);
+  }
+
+  .note-diagram figcaption {
+    margin-top: 0.45rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    color: var(--ink-tertiary);
+  }
+
+  .diagram-canvas svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+  }
+
+  .diagram-flow {
+    stroke-dasharray: 5 8;
+    animation: diagram-flow 0.9s linear infinite;
+  }
+
+  @keyframes diagram-flow {
+    to {
+      stroke-dashoffset: -26;
+    }
+  }
+
+  .note-diagram-modal {
+    width: min(1080px, calc(100vw - 1.5rem));
+    height: min(82vh, 820px);
+    max-width: calc(100vw - 1.5rem);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .note-diagram-modal[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .note-diagram-modal::backdrop {
+    background: color-mix(in srgb, #141311 62%, transparent);
+  }
+
+  .note-diagram-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-bottom: 1px solid var(--line);
+    padding: 0.75rem 0.9rem;
+  }
+
+  .note-diagram-toolbar p {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .note-diagram-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .note-diagram-controls button {
+    height: 2rem;
+    min-width: 2rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    padding: 0 0.7rem;
+    color: var(--ink);
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .note-diagram-controls button:hover {
+    border-color: var(--chapter);
+  }
+
+  .note-diagram-controls span {
+    min-width: 3rem;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 12px;
+    text-align: center;
+    color: var(--ink-secondary);
+  }
+
+  .diagram-stage {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    overflow: hidden;
+    background: var(--card);
+    cursor: grab;
+    touch-action: none;
+  }
+
+  .diagram-stage:active {
+    cursor: grabbing;
+  }
+
+  .diagram-canvas-large {
+    width: min(920px, 100%);
+    transform-origin: center center;
+  }
+
+  .note-code .shiki {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    background-color: transparent !important;
+    font-family: var(--font-mono-custom), ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .note-code .shiki span {
+    color: var(--shiki-light);
+    background-color: transparent;
+  }
+
+  :root[data-theme="dark"] .note-code .shiki span {
+    color: var(--shiki-dark);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .reveal {
       opacity: 1;
@@ -248,7 +475,8 @@ body {
     .hero-in,
     .hero-in-delay-1,
     .hero-in-delay-2,
-    .hero-in-delay-3 {
+    .hero-in-delay-3,
+    .diagram-flow {
       animation: none;
     }
   }

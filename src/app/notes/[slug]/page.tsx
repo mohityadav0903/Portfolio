@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { NoteMarkdown } from "@/components/NoteMarkdown";
 import { chipClass } from "@/components/NoteList";
 import { ShareLinks } from "@/components/ShareLinks";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -85,7 +86,7 @@ export default async function NotePage({
                   </span>
                   {chapter.title}
                 </h2>
-                <p className="text-base leading-relaxed text-muted">{chapter.body}</p>
+                <NoteMarkdown markdown={chapter.markdown} />
               </section>
             ))
           ) : (
