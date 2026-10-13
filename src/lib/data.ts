@@ -109,7 +109,8 @@ export type Note = {
   description: string;
   chip: NoteChip;
   date: string;
-  dateISO: string;
+  dateISO?: string;
+  soon?: boolean;
 };
 
 export const notes: Note[] = [
@@ -121,6 +122,14 @@ export const notes: Note[] = [
     chip: "Product",
     date: "2026.10",
     dateISO: "2026-10-01",
+  },
+  {
+    slug: "the-project-files-stay-on-the-disk",
+    title: "The project files stay on the disk",
+    description: "S3 Files, and what it takes for that disk to still be there.",
+    chip: "Systems",
+    date: "Soon",
+    soon: true,
   },
 ];
 

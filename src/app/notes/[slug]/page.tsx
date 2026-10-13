@@ -31,7 +31,7 @@ export async function generateMetadata({
       description: note.description,
       url: path,
       type: "article",
-      publishedTime: note.dateISO,
+      ...(note.dateISO ? { publishedTime: note.dateISO } : {}),
     },
   };
 }
@@ -51,7 +51,7 @@ export default async function NotePage({
     "@type": "Article",
     headline: note.title,
     description: note.description,
-    datePublished: note.dateISO,
+    ...(note.dateISO ? { datePublished: note.dateISO } : {}),
     author: {
       "@type": "Person",
       name: profile.name,
@@ -74,7 +74,9 @@ export default async function NotePage({
                 {note.chip}
               </span>
               <span className="font-mono text-[13px] text-muted">{note.date}</span>
-              <ShareLinks url={absoluteUrl(`/notes/${note.slug}`)} title={note.title} />
+              {chapters.length > 0 ? (
+                <ShareLinks url={absoluteUrl(`/notes/${note.slug}`)} title={note.title} />
+              ) : null}
             </div>
           </header>
           {chapters.length > 0 ? (
@@ -90,7 +92,7 @@ export default async function NotePage({
               </section>
             ))
           ) : (
-            <p className="text-base leading-relaxed text-muted">Writing this one next.</p>
+            <p className="text-base leading-relaxed text-muted">Coming soon.</p>
           )}
         </article>
         {chapters.length > 0 ? (

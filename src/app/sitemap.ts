@@ -8,9 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: absoluteUrl("/"), lastModified: now, changeFrequency: "monthly", priority: 1 },
     { url: absoluteUrl("/work"), lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: absoluteUrl("/notes"), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
-    ...notes.map((note) => ({
+    ...notes
+      .filter((note) => note.dateISO)
+      .map((note) => ({
       url: absoluteUrl(`/notes/${note.slug}`),
-      lastModified: new Date(note.dateISO),
+      lastModified: new Date(note.dateISO as string),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),

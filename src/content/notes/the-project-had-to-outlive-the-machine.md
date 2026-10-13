@@ -126,3 +126,5 @@ A new pod comes up with the cache already warm. The pricing page is still `app/p
 Claude Code, Cursor, and Codex on a laptop already feel normal. The folder is there. The toolchain is there. You do not wait for a computer to be created.
 
 A cloud agent has to feel like that when someone is generating a prototype. They come back tomorrow, the project is where they left it, and the packages are already there. The machine under it might be a different one. They should not have to know.
+
+S3 Files, and how the project stays on that disk, is the [next note](/notes/the-project-files-stay-on-the-disk).

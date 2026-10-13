@@ -22,7 +22,9 @@ export function NoteList({ showDates = false }: { showDates?: boolean }) {
               </span>
               <span className="truncate">{note.title}</span>
             </span>
-            {showDates ? (
+            {note.soon ? (
+              <span className="shrink-0 font-mono text-[13px] text-muted">Soon</span>
+            ) : showDates ? (
               <span className="shrink-0 font-mono text-[13px] text-muted">{note.date}</span>
             ) : null}
           </Link>
