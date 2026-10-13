@@ -2,7 +2,7 @@ import { profile } from "./data";
 
 export const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "https://mohityadav.dev";
+  "https://ymohit.com";
 
 export const site = {
   url: siteUrl,
@@ -18,27 +18,19 @@ export const site = {
   keywords: [
     profile.name,
     profile.brandName,
-    profile.role,
-    "Founding Engineer",
+    "Product engineer",
     "AI products",
-    "agentic systems",
     "system design",
-    "TypeScript",
-    "microservices",
-    "Redis Streams",
-    "LangGraph",
-    "realtime platforms",
     "Bengaluru",
-    "portfolio",
     "WebACP",
   ],
   authors: [{ name: profile.name, url: siteUrl }],
   socials: profile.socials,
   ogImage: {
-    path: "/og.png",
+    path: "/opengraph-image",
     width: 1200,
     height: 630,
-    alt: `${profile.name} — ${profile.role} portfolio`,
+    alt: `${profile.name} — ${profile.role}`,
   },
 };
 
@@ -62,12 +54,9 @@ export function personJsonLd() {
     },
     sameAs: [profile.socials.github, profile.socials.linkedin],
     knowsAbout: [
+      "Product engineering",
       "Artificial Intelligence",
       "System Design",
-      "TypeScript",
-      "Microservices",
-      "Agentic Systems",
-      "Realtime Systems",
     ],
   };
 }

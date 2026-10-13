@@ -3,13 +3,13 @@ export const profile = {
   lastName: "Yadav",
   brandName: "Y.Mohit",
   name: "Mohit Yadav",
-  role: "Founding Engineer",
+  role: "Product engineer",
   tags: ["Founding Engineer", "AI Products (B2B & SaaS)"],
   location: "Bengaluru, India",
   email: "elitemohityadav@gmail.com",
-  calUrl: "https://cal.com/mohityadav0903/15min",
+  calUrl: "https://cal.com/mohityadav0903/quick-connect",
   intro:
-    "I build AI products from zero to scale — agentic design tools, multimodal systems, and the realtime platforms that make them work in production. Shipped to 350K+ users, with system design across microservices, streaming pipelines, vector search, and infra built to hold up in prod.",
+    "Building the product and owning the problem used to be two jobs. They don't have to be.",
   stack: [
     "TypeScript",
     "Python",
@@ -48,24 +48,16 @@ export type Work = {
   glow: string;
 };
 
+export const lede =
+  "For the last four years I have stayed with both. The problem people actually had, and the system that had to hold once they were using it.";
+
 export const works: Work[] = [
-  {
-    title: "WebACP",
-    category: "Open Source · Agent Protocols",
-    year: "2025",
-    description:
-      "A TypeScript SDK bringing the Agent Client Protocol (ACP) and MCP to the web — embed and drive coding agents from any app, with persistent threads, server/local tool routing, and a path toward multi-CLI orchestration.",
-    href: "https://github.com/mohityadav0903/webAcp",
-    image: "/work/webacp-share.png",
-    gradient: "from-[#d1fae5] via-[#a7f3d0] to-[#6ee7b7]",
-    glow: "rgba(255,255,255,0.4)",
-  },
   {
     title: "Figr AI",
     category: "Agentic Design Platform",
     year: "2024",
     description:
-      "Building an AI-native workspace for product teams — a multimodal design agent for ideation, flows, screen variations, and prototyping, grounded in the team's design system and product context. Realtime multiplayer, streaming agent runs, and a full microservices platform behind it.",
+      "A design workspace product teams use to go from an idea to a real prototype. The platform reached 350K+ people.",
     href: "https://figr.design",
     image: "/work/figr-ai-share.webp",
     marketingImage: "/work/figr-ai-marketing.png",
@@ -77,7 +69,7 @@ export const works: Work[] = [
     category: "Design Systems · Figma",
     year: "2024",
     description:
-      "An AI design-system generator inside Figma that turns any UI into full token systems using Claude vision and component vector search — helping teams organize, generate, and apply design systems without leaving their workflow. Shipped to 150K+ users.",
+      "Turned any screen into a design system inside Figma. 150K+ people used it without leaving the file.",
     href: "https://www.figma.com/community/plugin/1350743748296105581/figr-identity-generate-design-systems-with-ai",
     video: "/work/identity-full.mp4",
     image: "/work/identity.png",
@@ -89,12 +81,64 @@ export const works: Work[] = [
     category: "Design Library · Search",
     year: "2023",
     description:
-      "Shipped from scratch in 7 days as the sole engineer — a design library with AI-powered search and recommendations (FAISS, GPT-4) over thousands of real app patterns. Grew to 200K+ users and became the product that unlocked our first funding.",
+      "A design library designers could actually search. 200K+ people, and the product that unlocked the first funding.",
     href: "https://flash.figr.design",
     image: "/work/flash-share.png",
     imageFit: "contain",
     gradient: "from-[#dbeafe] via-[#c8e6a0] to-[#b8d890]",
     glow: "rgba(255,255,255,0.5)",
+  },
+  {
+    title: "WebACP",
+    category: "Open Source · Agent Protocols",
+    year: "2025",
+    description:
+      "A way to run coding agents from the web. Persistent threads and your own tools, not a generic chat harness.",
+    href: "https://github.com/mohityadav0903/webAcp",
+    image: "/work/webacp-share.png",
+    gradient: "from-[#d1fae5] via-[#a7f3d0] to-[#6ee7b7]",
+    glow: "rgba(255,255,255,0.4)",
+  },
+];
+
+export type NoteChip = "Product" | "Craft" | "Systems";
+
+export type Note = {
+  slug: string;
+  title: string;
+  description: string;
+  chip: NoteChip;
+  date: string;
+  dateISO: string;
+};
+
+export const notes: Note[] = [
+  {
+    slug: "the-build-was-never-only-the-system",
+    title: "The build was never only the system",
+    description:
+      "Product engineering is the problem and the system, kept together past the first version.",
+    chip: "Product",
+    date: "2026.10",
+    dateISO: "2026-10-01",
+  },
+  {
+    slug: "why-the-basics-still-matter",
+    title: "Why the basics still matter when you are moving fast",
+    description:
+      "A deadline is not a reason to leave the foundation unclear.",
+    chip: "Craft",
+    date: "2026.09",
+    dateISO: "2026-09-01",
+  },
+  {
+    slug: "a-system-once-people-are-on-it",
+    title: "How I think about a system once people are on it",
+    description:
+      "What has to hold after the first version is in front of real people.",
+    chip: "Systems",
+    date: "2026.08",
+    dateISO: "2026-08-01",
   },
 ];
 
@@ -165,10 +209,6 @@ export const experiences: Experience[] = [
 ];
 
 export const nav: { label: string; href: string; external?: boolean }[] = [
-  { label: "Home", href: "#top" },
-  { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Playground", href: "#playground" },
-  { label: "LinkedIn", href: profile.socials.linkedin, external: true },
+  { label: "Work", href: "/work" },
+  { label: "Notes", href: "/notes" },
 ];

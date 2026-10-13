@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --surface: #ffffff;
-  --ink: #111111;
-  --ink-secondary: #555550;
-  --ink-tertiary: #888880;
+  color-scheme: light;
+  --background: #f6f4ef;
+  --surface: #f6f4ef;
+  --card: #fffcfa;
+  --well: #f3efe8;
+  --line: #e6e1d8;
+  --ink: #1c1b19;
+  --ink-secondary: #6b6760;
+  --ink-tertiary: #8a847c;
   --border: rgba(17, 17, 17, 0.1);
   --border-strong: rgba(17, 17, 17, 0.16);
   --brand: #245bdb;
@@ -15,18 +19,61 @@
   --pill-active: #d4f07a;
   --dot-color: rgba(17, 17, 17, 0.3);
   --dot-gap: 8px;
+  --chapter: #c4a484;
+  --chip-product-bg: #f3e6d4;
+  --chip-product-ink: #8a5a32;
+  --chip-craft-bg: #e7ddf6;
+  --chip-craft-ink: #5c4a78;
+  --chip-systems-bg: #dcefe4;
+  --chip-systems-ink: #2f6b4f;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #141311;
+  --surface: #141311;
+  --card: #1e1c1a;
+  --well: #2a2724;
+  --line: #34312c;
+  --ink: #f3f0e8;
+  --ink-secondary: #a39e94;
+  --ink-tertiary: #8a847c;
+  --border: rgba(243, 240, 232, 0.12);
+  --border-strong: rgba(243, 240, 232, 0.2);
+  --brand-soft: #1c2438;
+  --tag-bg: #1c2438;
+  --dot-color: rgba(243, 240, 232, 0.28);
+  --chapter: #d4b48a;
+  --chip-product-bg: #3d3228;
+  --chip-product-ink: #e7cdb4;
+  --chip-craft-bg: #322c3c;
+  --chip-craft-ink: #d9ccee;
+  --chip-systems-bg: #24342c;
+  --chip-systems-ink: #c5e0d2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-well: var(--well);
+  --color-line: var(--line);
   --color-foreground: var(--ink);
   --color-muted: var(--ink-secondary);
   --color-muted-2: var(--ink-tertiary);
   --color-border: var(--border);
   --color-brand: var(--brand);
   --color-brand-soft: var(--brand-soft);
+  --color-chapter: var(--chapter);
+  --color-chip-product: var(--chip-product-bg);
+  --color-chip-product-ink: var(--chip-product-ink);
+  --color-chip-craft: var(--chip-craft-bg);
+  --color-chip-craft-ink: var(--chip-craft-ink);
+  --color-chip-systems: var(--chip-systems-bg);
+  --color-chip-systems-ink: var(--chip-systems-ink);
   --font-sans: var(--font-sans-custom);
+  --font-serif: var(--font-serif-custom);
+  --font-mono: var(--font-mono-custom);
 }
 
 * {
@@ -49,6 +96,17 @@ body {
 ::selection {
   background: var(--ink);
   color: var(--surface);
+}
+
+.theme-icon {
+  display: none;
+}
+
+:root[data-theme-choice="light"] .theme-icon-light,
+:root[data-theme-choice="dark"] .theme-icon-dark,
+:root[data-theme-choice="system"] .theme-icon-system,
+:root:not([data-theme-choice]) .theme-icon-system {
+  display: block;
 }
 
 @layer utilities {
