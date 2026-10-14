@@ -1,4 +1,6 @@
-import type { HTMLAttributes, ReactNode } from "react";
+"use client";
+
+import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode } from "react";
 
 function Marker({ id }: { id: string }) {
   return (
@@ -328,97 +330,80 @@ const diagrams: Record<string, { title: string; caption: string; draw: (uid: str
   },
 };
 
-const diagramScript = `
-(() => {
-  if (window.__noteDiagrams) return;
-  window.__noteDiagrams = true;
-  const clamp = (value) => Math.min(2.5, Math.max(0.6, Math.round(value * 100) / 100));
-  const paint = (canvas) => {
-    const zoom = Number(canvas.dataset.zoom || 1);
-    const x = Number(canvas.dataset.x || 0);
-    const y = Number(canvas.dataset.y || 0);
-    canvas.style.transform = "translate(" + x + "px, " + y + "px) scale(" + zoom + ")";
-    const label = canvas.closest("dialog")?.querySelector("[data-zoom-label]");
-    if (label) label.textContent = Math.round(zoom * 100) + "%";
-  };
-  const reset = (dialog) => {
-    const canvas = dialog.querySelector(".diagram-canvas-large");
-    if (!canvas) return;
-    canvas.dataset.zoom = "1";
-    canvas.dataset.x = "0";
-    canvas.dataset.y = "0";
-    paint(canvas);
-  };
-  let drag = null;
-  document.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-zoom]");
-    if (button) {
-      const dialog = button.closest("dialog");
-      const canvas = dialog?.querySelector(".diagram-canvas-large");
-      if (!dialog || !canvas) return;
-      if (button.dataset.zoom === "close") {
-        dialog.close();
-        return;
-      }
-      let zoom = Number(canvas.dataset.zoom || 1);
-      if (button.dataset.zoom === "in") zoom = clamp(zoom + 0.25);
-      if (button.dataset.zoom === "out") zoom = clamp(zoom - 0.25);
-      if (button.dataset.zoom === "fit") {
-        zoom = 1;
-        canvas.dataset.x = "0";
-        canvas.dataset.y = "0";
-      }
-      canvas.dataset.zoom = String(zoom);
-      paint(canvas);
-      return;
-    }
-    if (event.target instanceof HTMLDialogElement) event.target.close();
-  });
-  document.addEventListener("close", (event) => {
-    if (event.target instanceof HTMLDialogElement) reset(event.target);
-  }, true);
-  document.addEventListener("pointerdown", (event) => {
-    const stage = event.target.closest(".diagram-stage");
-    if (!stage || !stage.closest("dialog")?.open) return;
-    const canvas = stage.querySelector(".diagram-canvas-large");
-    if (!canvas) return;
-    drag = {
-      canvas,
-      x: event.clientX,
-      y: event.clientY,
-      px: Number(canvas.dataset.x || 0),
-      py: Number(canvas.dataset.y || 0),
-    };
-    stage.setPointerCapture(event.pointerId);
-  });
-  document.addEventListener("pointermove", (event) => {
-    if (!drag) return;
-    drag.canvas.dataset.x = String(drag.px + event.clientX - drag.x);
-    drag.canvas.dataset.y = String(drag.py + event.clientY - drag.y);
-    paint(drag.canvas);
-  });
-  document.addEventListener("pointerup", () => {
-    drag = null;
-  });
-  document.addEventListener("pointercancel", () => {
-    drag = null;
-  });
-  document.addEventListener("wheel", (event) => {
-    const stage = event.target.closest?.(".diagram-stage");
-    if (!stage || !stage.closest("dialog")?.open) return;
-    const canvas = stage.querySelector(".diagram-canvas-large");
-    if (!canvas) return;
-    event.preventDefault();
-    canvas.dataset.zoom = String(clamp(Number(canvas.dataset.zoom || 1) + (event.deltaY < 0 ? 0.08 : -0.08)));
-    paint(canvas);
-  }, { passive: false });
-})();
-`;
+function clamp(value: number) {
+  return Math.min(2.5, Math.max(0.6, Math.round(value * 100) / 100));
+}
 
 export function NoteDiagram({ id }: { id: string }) {
   const diagram = diagrams[id];
-  if (!diagram) return null;
+  const dialog = useRef<HTMLDialogElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef(1);
+  const panRef = useRef({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
   const dialogId = `diagram-${id}`;
+  panRef.current = pan;
+
+  function setZoomTo(value: number) {
+    const next = clamp(value);
+    zoomRef.current = next;
+    setZoom(next);
+  }
+
+  function resetView() {
+    zoomRef.current = 1;
+    setZoom(1);
+    setPan({ x: 0, y: 0 });
+  }
+
+  useEffect(() => {
+    const node = stage.current;
+    if (!node) return;
+    let drag: { x: number; y: number; px: number; py: number } | null = null;
+
+    const onWheel = (event: WheelEvent) => {
+      if (!dialog.current?.open) return;
+      event.preventDefault();
+      event.stopPropagation();
+      setZoomTo(zoomRef.current + (event.deltaY < 0 ? 0.08 : -0.08));
+    };
+    const onDown = (event: PointerEvent) => {
+      if (event.button !== 0) return;
+      drag = { x: event.clientX, y: event.clientY, px: panRef.current.x, py: panRef.current.y };
+      node.setPointerCapture(event.pointerId);
+    };
+    const onMove = (event: PointerEvent) => {
+      if (!drag) return;
+      setPan({
+        x: drag.px + event.clientX - drag.x,
+        y: drag.py + event.clientY - drag.y,
+      });
+    };
+    const onUp = () => {
+      drag = null;
+    };
+
+    node.addEventListener("wheel", onWheel, { passive: false });
+    node.addEventListener("pointerdown", onDown);
+    node.addEventListener("pointermove", onMove);
+    node.addEventListener("pointerup", onUp);
+    node.addEventListener("pointercancel", onUp);
+    return () => {
+      node.removeEventListener("wheel", onWheel);
+      node.removeEventListener("pointerdown", onDown);
+      node.removeEventListener("pointermove", onMove);
+      node.removeEventListener("pointerup", onUp);
+      node.removeEventListener("pointercancel", onUp);
+    };
+  }, []);
+
+  if (!diagram) return null;
+
+  function open() {
+    resetView();
+    dialog.current?.showModal();
+  }
 
   return (
     <figure className="note-diagram">
@@ -426,36 +411,50 @@ export function NoteDiagram({ id }: { id: string }) {
         type="button"
         className="note-diagram-open"
         {...({ command: "show-modal", commandfor: dialogId } as HTMLAttributes<HTMLButtonElement>)}
+        onClick={open}
         aria-label={`Open diagram: ${diagram.title}`}
       >
         <span className="diagram-canvas">{diagram.draw(`${id}-card`)}</span>
         <span className="note-diagram-hint">Open</span>
       </button>
       <figcaption>{diagram.caption}</figcaption>
-      <dialog id={dialogId} className="note-diagram-modal" aria-label={diagram.title}>
+      <dialog
+        id={dialogId}
+        ref={dialog}
+        className="note-diagram-modal"
+        aria-label={diagram.title}
+        onClick={(event) => {
+          if (event.target === dialog.current) dialog.current?.close();
+        }}
+        onClose={resetView}
+      >
         <div className="note-diagram-toolbar">
           <p>{diagram.title}</p>
           <div className="note-diagram-controls">
-            <button type="button" data-zoom="out" aria-label="Zoom out">
+            <button type="button" onClick={() => setZoomTo(zoomRef.current - 0.25)} aria-label="Zoom out">
               −
             </button>
-            <span data-zoom-label>100%</span>
-            <button type="button" data-zoom="in" aria-label="Zoom in">
+            <span>{Math.round(zoom * 100)}%</span>
+            <button type="button" onClick={() => setZoomTo(zoomRef.current + 0.25)} aria-label="Zoom in">
               +
             </button>
-            <button type="button" data-zoom="fit">
+            <button type="button" onClick={resetView}>
               Fit
             </button>
-            <button type="button" data-zoom="close">
-              Close
-            </button>
+            <form method="dialog">
+              <button type="submit">Close</button>
+            </form>
           </div>
         </div>
-        <div className="diagram-stage">
-          <div className="diagram-canvas diagram-canvas-large">{diagram.draw(`${id}-modal`)}</div>
+        <div ref={stage} className="diagram-stage">
+          <div
+            className="diagram-canvas diagram-canvas-large"
+            style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})` }}
+          >
+            {diagram.draw(`${id}-modal`)}
+          </div>
         </div>
       </dialog>
-      <script dangerouslySetInnerHTML={{ __html: diagramScript }} />
     </figure>
   );
 }

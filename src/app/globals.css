@@ -437,6 +437,11 @@ body {
     background: var(--card);
     cursor: grab;
     touch-action: none;
+    user-select: none;
+  }
+
+  .note-diagram-controls form {
+    display: contents;
   }
 
   .diagram-stage:active {
